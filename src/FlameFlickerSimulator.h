@@ -32,12 +32,14 @@ public:
 
     /**
      * @brief Initializes the LED strip and starts all flicker tasks.
+     * 
+     * @param gamma    Gamma Exponent, 2.2 is default
      *
      * Must be called once in setup(). Configures the NeoPixel driver,
      * seeds the random generator, and registers all behavior tasks
      * (flame flicker, sparkle, and wind modulation).
      */
-    void begin();
+    void begin(float gamma = 2.2f);
 
     /**
      * @brief Runs the scheduler loop.
@@ -48,6 +50,7 @@ public:
     void run();
 
 private:
+    void buildGammaLut(float gamma); // Builds the gamma lookup table (0–255) based on user gamma.
 
     static void flameFlickerTaskWrapper();
     static void candleSparkleTaskWrapper();
@@ -104,13 +107,14 @@ private:
 
 
     static FlameFlickerSimulator* _instance;   // static self-pointer used by static task wrappers
-    TaskScheduler<3> _tm;             // cooperative scheduler for managing flicker tasks
-    Adafruit_NeoPixel _strip;         // NeoPixel LED driver instance
-    uint8_t _globalBrightness;        // current global brightness level
-    uint8_t _hFlame;                   // task handle: flame flicker effect
-    uint8_t _hSparkle;                // task handle: ember sparkle effect
-    uint8_t _hWind;               // task handle: wind flicker (breathing) effect
+
+    TaskScheduler<3> _tm;       // cooperative scheduler for managing flicker tasks
+    Adafruit_NeoPixel _strip;   // NeoPixel LED driver instance
+    uint8_t _globalBrightness;  // current global brightness level
+    uint8_t _hFlame;            // task handle: flame flicker effect
+    uint8_t _hSparkle;          // task handle: ember sparkle effect
+    uint8_t _hWind;             // task handle: wind flicker (breathing) effect
+    uint8_t _gammaLut[256];     // gamma correction lookup table
 };
 
 #endif // FLAME_FLICKER_SIMULATOR_H
-
