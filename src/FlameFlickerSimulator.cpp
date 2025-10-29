@@ -9,9 +9,11 @@ FlameFlickerSimulator::FlameFlickerSimulator(uint8_t pin, uint8_t numLeds)
   _hSparkle(IScheduler::INVALID_TASK_ID),
   _hWind(IScheduler::INVALID_TASK_ID){}
 
-void FlameFlickerSimulator::begin()
+void FlameFlickerSimulator::begin(float gamma)
 {
     _instance = this;
+
+    buildGammaLut(gamma);
 
     _strip.begin();
     _strip.setBrightness(_globalBrightness);
@@ -24,6 +26,15 @@ void FlameFlickerSimulator::begin()
 }
 
 void FlameFlickerSimulator::run() { _tm.run(); }
+
+void FlameFlickerSimulator::buildGammaLut(float gamma)
+{
+    for (int i = 0; i < 256; i++)
+    {
+        float normalized = pow(i / 255.0f, gamma);
+        _gammaLut[i] = (uint8_t)round(normalized * 255.0f);
+    }
+}
 
 void FlameFlickerSimulator::flameFlickerTaskWrapper() { _instance->flameFlickerTask(); }
 void FlameFlickerSimulator::candleSparkleTaskWrapper() { _instance->candleSparkleTask(); }
@@ -74,10 +85,10 @@ void FlameFlickerSimulator::flameFlickerTask()
     uint8_t white = brightness / WHITE_ACCENT_DIV;
 
     // Apply gamma correction for smoother perceived brightness
-    red   = _strip.gamma8(red);
-    green = _strip.gamma8(green);
-    blue  = _strip.gamma8(blue);
-    white = _strip.gamma8(white);
+    red   = _gammaLut[red];
+    green = _gammaLut[green];
+    blue  = _gammaLut[blue];
+    white = _gammaLut[white];
 
     // Write color to LED buffer
     _strip.setPixelColor(i, _strip.Color(red, green, blue, white));
@@ -93,35 +104,22 @@ void FlameFlickerSimulator::flameFlickerTask()
 void FlameFlickerSimulator::candleSparkleTask()
 {
   // === Effect parameters ===
-  const uint8_t  SPARKLE_PROBABILITY = 50;     // % chance each frame to trigger a sparkle (higher = more frequent)
-  const uint16_t SPARKLE_DELAY_MS    = 180;   // how often to check (ms)
-  const uint8_t  SPARKLE_COLOR_R     = 255;   // red component (0–255)
-  const uint8_t  SPARKLE_COLOR_G     = 120;   // green component — controls warmth
-  const uint8_t  SPARKLE_COLOR_B     = 0;     // blue component (usually 0 for warm tones)
-  const uint8_t  SPARKLE_COLOR_W     = 50;    // white LED accent (0–255)
+  const uint8_t  SPARKLE_PROBABILITY = 8;      // % chance per frame
+  const uint16_t SPARKLE_DELAY_MS    = 180;    // update interval (ms)
 
-  // Only trigger a sparkle randomly with the given probability.
+  // Precomputed gamma-corrected sparkle color
+  const uint32_t sparkleColor = _strip.Color(_gammaLut[255], _gammaLut[120], _gammaLut[0], _gammaLut[50]);
+
   if (random(0, 100) < SPARKLE_PROBABILITY)
   {
-    // Pick a random LED index
     int idx = random(_strip.numPixels());
-
-    // Gamma-corrected sparkle color (so brightness looks natural)
-    uint8_t r = _strip.gamma8(SPARKLE_COLOR_R);
-    uint8_t g = _strip.gamma8(SPARKLE_COLOR_G);
-    uint8_t b = _strip.gamma8(SPARKLE_COLOR_B);
-    uint8_t w = _strip.gamma8(SPARKLE_COLOR_W);
-
-    // Apply the sparkle to that LED
-    _strip.setPixelColor(idx, _strip.Color(r, g, b, w));
-
-    // Show the new frame (sparkle will fade naturally as flicker task overwrites it)
+    _strip.setPixelColor(idx, sparkleColor);
     _strip.show();
   }
 
-  // Wait before the next sparkle check
   _tm.vTaskDelayUntil(SPARKLE_DELAY_MS);
 }
+
 
 void FlameFlickerSimulator::windFlickerTask()
 {
@@ -168,7 +166,8 @@ void FlameFlickerSimulator::windFlickerTask()
   }
   else if (calmCounter > 0)
   {
-      calmCounter--; // slowly relax
+      //calmCounter >>= 1;  // decay faster (relaxes about twice as fast)
+      calmCounter = 0;
   }
 
   // Apply new brightness directly (no gamma — preserves natural movement)
