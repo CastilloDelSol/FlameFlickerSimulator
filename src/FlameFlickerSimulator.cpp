@@ -176,5 +176,4 @@ void FlameFlickerSimulator::windFlickerTask()
 
   // Wait before next update
   _tm.vTaskDelayUntil(UPDATE_INTERVAL_MS);
-
 }
