@@ -1,5 +1,5 @@
-#ifndef FIRE_SIMULATOR_H
-#define FIRE_SIMULATOR_H
+#ifndef FLAME_FLICKER_SIMULATOR_H
+#define FLAME_FLICKER_SIMULATOR_H
 
 #include <Adafruit_NeoPixel.h>
 #include <TaskScheduler.h>
@@ -112,4 +112,5 @@ private:
     uint8_t _hWind;               // task handle: wind flicker (breathing) effect
 };
 
-#endif // PUMPKIN_LIGHT_H
+#endif // FLAME_FLICKER_SIMULATOR_H
+
