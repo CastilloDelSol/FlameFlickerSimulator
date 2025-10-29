@@ -1,4 +1,4 @@
-#include "PumpkinLight.h"
+#include "FlameFlickerSimulator.h"
 
 FlameFlickerSimulator* FlameFlickerSimulator::_instance = nullptr;
 
@@ -176,4 +176,5 @@ void FlameFlickerSimulator::windFlickerTask()
 
   // Wait before next update
   _tm.vTaskDelayUntil(UPDATE_INTERVAL_MS);
+
 }
