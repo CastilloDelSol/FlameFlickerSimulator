@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "PumpkinLight.h"
+#include "FlameFlickerSimulator.h"
 
 #define DATA_PIN A0
 #define NUM_LEDS 8
@@ -14,4 +14,5 @@ void setup()
 void loop()
 {
     pumpkin.run();
+
 }
