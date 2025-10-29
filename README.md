@@ -26,6 +26,7 @@ Add to your `platformio.ini`:
 ```ini
 lib_deps = 
     https://github.com/CastilloDelSol/FlameFlickerSimulator.git
+    https://github.com/CastilloDelSol/TaskScheduler.git
 ```
 
 ### Arduino IDE
