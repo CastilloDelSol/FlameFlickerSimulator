@@ -1,11 +1,11 @@
 {
-  "name": "PumpkinLight",
+  "name": "FlameFlickerSimulator",
   "version": "1.0.0",
-  "description": "Realistic candle and pumpkin flicker animation using Adafruit NeoPixel and TaskScheduler.",
-  "keywords": "candle, flicker, neopixel, animation, halloween, pumpkin",
+  "description": "Realistic fire and flame flicker animation using Adafruit NeoPixel and TaskScheduler.",
+  "keywords": "flame, torch, campfire, candle, flicker, neopixel, animation, halloween, pumpkin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CastilloDelSol/PumpkinLight.git"
+    "url": "https://github.com/CastilloDelSol/FlameFlickerSimulator.git"
   },
   "authors": [
     {
@@ -18,14 +18,18 @@
   "dependencies": [
     {
       "name": "Adafruit NeoPixel",
-      "version": ">=1.12.0"
+      "version": "1.15.2",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/adafruit/Adafruit_NeoPixel.git#1.12.0"
+      }
     },
     {
       "name": "TaskScheduler",
-      "version": ">=0.1.0",
+      "version": "0.1.0",
       "repository": {
         "type": "git",
-        "url": "https://github.com/CastilloDelSol/TaskScheduler.git"
+        "url": "https://github.com/CastilloDelSol/TaskScheduler.git#v0.1.0"
       }
     }
   ]
