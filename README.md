@@ -1,6 +1,6 @@
-# PumpkinLight
+# FlameFlickerSimulator
 
-**PumpkinLight** is an Arduino-compatible library that simulates a realistic candle or pumpkin flicker effect using **Adafruit NeoPixel (SK6812 / WS2812 RGBW)** LEDs and a cooperative **TaskScheduler**.
+**FlameFlickerSimulator** is an Arduino-compatible library that simulates a realistic candle or flame flicker effect using **Adafruit NeoPixel (SK6812 / WS2812 RGBW)** LEDs and a cooperative **TaskScheduler**.
 
 It combines three concurrent effects:
 - 🕯️ **Flame Flicker:** Warm, uneven red–orange glow for each LED
@@ -41,12 +41,12 @@ Basic example for SK6812 RGBW strip with 8 LEDs on pin A0:
 
 ```cpp
 #include <Arduino.h>
-#include "PumpkinLight.h"
+#include "FlameFlickerSimulator.h"
 
 #define DATA_PIN A0
 #define NUM_LEDS 8
 
-PumpkinLight pumpkin(DATA_PIN, NUM_LEDS);
+FlameFlickerSimulator pumpkin(DATA_PIN, NUM_LEDS);
 
 void setup() { pumpkin.begin(); }
 void loop()  { pumpkin.run();   }
