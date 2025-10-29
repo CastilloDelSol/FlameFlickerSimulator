@@ -40,7 +40,6 @@ void FlameFlickerSimulator::flameFlickerTaskWrapper() { _instance->flameFlickerT
 void FlameFlickerSimulator::candleSparkleTaskWrapper() { _instance->candleSparkleTask(); }
 void FlameFlickerSimulator::windFlickerTaskWrapper() { _instance->windFlickerTask(); }
 
-
 void FlameFlickerSimulator::flameFlickerTask()
 {
   // === Effect parameters ===
@@ -119,7 +118,6 @@ void FlameFlickerSimulator::candleSparkleTask()
 
   _tm.vTaskDelayUntil(SPARKLE_DELAY_MS);
 }
-
 
 void FlameFlickerSimulator::windFlickerTask()
 {
