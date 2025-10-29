@@ -25,7 +25,7 @@ Perfect for pumpkins, lanterns, candles, or cozy ambient lighting.
 Add to your `platformio.ini`:
 ```ini
 lib_deps = 
-    https://github.com/CastilloDelSol/PumpkinLight.git
+    https://github.com/CastilloDelSol/FlameFlickerSimulator.git
 ```
 
 ### Arduino IDE
